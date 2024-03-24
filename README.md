@@ -32,7 +32,7 @@ This will initiate the training process using the Adam optimizer and binary cros
 To test the trained model on sample siren sounds, run:
 
 ```bash
-python lvetester.py
+python livetester.py
 ```
 
 This will evaluate the performance of the model on test data.
