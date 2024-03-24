@@ -7,7 +7,6 @@ from sklearn.metrics import accuracy_score
 import tensorflow as tf
 from tensorflow.keras import layers, models
 
-# Function to extract audio features
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')) , tf.config.list_logical_devices('GPU'))
 physical_devices = tf.config.list_physical_devices('GPU')
 print(physical_devices)
@@ -34,15 +33,13 @@ def extract_features(file_path):
         print(f"Error details: {str(e)}")
         return None
 
-# Load and preprocess the data
-ambulance_path = "./Ambulance data"  # Replace with the actual path
-street_path = "./Road Noises"  # Replace with the actual path
+ambulance_path = "./Ambulance data" 
+street_path = "./Road Noises"  
 
 ambulance_features = []
 street_features = []
 labels = []
 
-# Process ambulance sounds
 for filename in os.listdir(ambulance_path):
    if filename.endswith('.wav'):
         file_path = os.path.join(ambulance_path, filename)
@@ -50,9 +47,9 @@ for filename in os.listdir(ambulance_path):
         features = extract_features(file_path)
         if features is not None:
             ambulance_features.append(features)
-            labels.append(1)  # Label 1 for ambulance sounds
+            labels.append(1)  
 
-# Process street sounds
+
 for filename in os.listdir(street_path):
     if filename.endswith('.wav'):
         file_path = os.path.join(street_path, filename)
@@ -60,32 +57,25 @@ for filename in os.listdir(street_path):
         features = extract_features(file_path)
         if features is not None:
             street_features.append(features)
-            labels.append(0)  # Label 0 for street sounds
-
-# Combine features and labels
+            labels.append(0)  
             
 X = np.vstack((ambulance_features, street_features))
 y = np.array(labels)
 
-# Encode labels using LabelEncoder
 label_encoder = LabelEncoder()
 y_encoded = label_encoder.fit_transform(y)
 
-# Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.2, random_state=42)
 
-# Build the MLP model
 model = models.Sequential()
 model.add(layers.Dense(128, activation='relu', input_shape=(X_train.shape[1],)))
 model.add(layers.Dropout(0.5))
-model.add(layers.Dense(1, activation='sigmoid'))  # Output layer with 1 node for binary classification
+model.add(layers.Dense(1, activation='sigmoid'))  
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-# Train the model
 model.fit(X_train, y_train, epochs=10, batch_size=32, validation_data=(X_test, y_test))
 
-# Evaluate the model
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Test accuracy: {accuracy * 100:.2f}%")
