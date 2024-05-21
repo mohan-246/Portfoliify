@@ -43,7 +43,4 @@ Once the model is trained and tested, you can use it to detect siren sounds in r
 ### Contributing
 Contributions are welcome! If you have improvements or new features to suggest, please open an issue or create a pull request.
 
-### License
-This project is licensed under the MIT License .
-
 Happy coding and safe traffic management!
